@@ -137,7 +137,13 @@ public class VentanaPrincipal {
 					
 					textFieldNombre.setText(model.getValueAt(index, 0).toString());
 					textFieldNombre2.setText(model.getValueAt(index, 1).toString());
-					smt2.setString(1,model.getValueAt(index, 3).toString());
+					textFieldDNI.setText(model.getValueAt(index, 2).toString());
+					
+					String dni=(String) model.getValueAt(index, 0);
+					System.out.println(dni);
+					
+				smt2.setString(1,model.getValueAt(index, 3).toString());
+					System.out.println();
 					smt2.executeUpdate();
 					smt2.close();
 					con.close();
