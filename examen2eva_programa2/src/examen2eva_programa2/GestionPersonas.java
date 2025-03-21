@@ -1,4 +1,8 @@
 //Marcos Pallas Perez;
+/**
+ * @author a023916070a
+ * @version 1.0
+ */
 package examen2eva_programa2;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +11,9 @@ import java.util.Scanner;
 import personaExamen.*;
 public class GestionPersonas {
 
+	/**
+	 * Imprime el menu
+	 */
 	static void imprimirMenu() {
 		System.out.println("OPCIONES 1-5");
 		System.out.println("1. Introducir una nueva persona");
@@ -18,6 +25,7 @@ public class GestionPersonas {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		List<Persona> lista=new ArrayList<>();
+		
 		String nombre="";
 		int edad=0;
 		int sueldo=0;
@@ -26,10 +34,16 @@ public class GestionPersonas {
 		int deuda=0;
 		
 		Scanner entrada=new Scanner(System.in);
+		/**
+		 * Bucle do while el cual imprime un menu
+		 */
 		do {
 			GestionPersonas.imprimirMenu();
 			opcion=entrada.nextInt();
 			
+			/**
+			 * switch para que realizar en cada opcion
+			 */
 			switch(opcion) {
 			case 1:
 				System.out.println("Dime el nombre de la persona");
@@ -49,7 +63,7 @@ public class GestionPersonas {
 				System.out.println("Dime la posicion que quieras borrar");
 				posicion=entrada.nextInt();
 				lista.remove(posicion);
-				}catch(Exception IndexOutofBounds) {
+				}catch(IndexOutOfBoundsException ex1) {
 					System.out.println("La posicion no existe");
 				}
 				break;
@@ -74,7 +88,7 @@ public class GestionPersonas {
 				}
 				
 				
-				}catch(Exception IndexOutofBounds) {
+				}catch(IndexOutOfBoundsException ex) {
 					System.out.println("La posicion no existe");
 				}
 				break;
