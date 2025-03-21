@@ -129,17 +129,28 @@ public class VentanaPrincipal {
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			
+			}
+		});
+	
+		btnUpdate.setBounds(161, 237, 90, 25);
+		frame.getContentPane().add(btnUpdate);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				try {
 					Connection con= ConnectionSingleton.getConnection();
 					TableModel model=table.getModel();
 					int index=table.getSelectedRow();
 					PreparedStatement smt2=con.prepareStatement("DELETE * FROM personas WHERE dni=?");
 					
-					textFieldNombre.setText(model.getValueAt(index, 0).toString());
-					textFieldNombre2.setText(model.getValueAt(index, 1).toString());
-					textFieldDNI.setText(model.getValueAt(index, 2).toString());
+					textFieldNombre.setText(model.getValueAt(index, 1).toString());
+					textFieldNombre2.setText(model.getValueAt(index, 2).toString());
+					textFieldDNI.setText(model.getValueAt(index, 3).toString());
 					
-					String dni=(String) model.getValueAt(index, 0);
+					String dni=(String) model.getValueAt(index, 3);
 					System.out.println(dni);
 					
 				smt2.setString(1,model.getValueAt(index, 3).toString());
@@ -152,11 +163,6 @@ public class VentanaPrincipal {
 				}
 			}
 		});
-	
-		btnUpdate.setBounds(161, 237, 90, 25);
-		frame.getContentPane().add(btnUpdate);
-		
-		JButton btnDelete = new JButton("Delete");
 		btnDelete.setBounds(277, 237, 85, 25);
 		frame.getContentPane().add(btnDelete);
 		
