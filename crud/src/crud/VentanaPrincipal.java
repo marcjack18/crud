@@ -41,6 +41,10 @@ public class VentanaPrincipal {
 	private JTextField textFieldDNI;
 	private JTable table;
 	
+	String nombre_ins="";
+	String nombre2_ins="";
+	String dni_ins="";
+	
 
 	/**
 	 * Launch the application.
@@ -102,6 +106,8 @@ public class VentanaPrincipal {
 		textFieldDNI.setBounds(164, 120, 114, 19);
 		frame.getContentPane().add(textFieldDNI);
 		
+		
+		//INSERTAR
 		JButton btnSave = new JButton("Save");
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
@@ -109,9 +115,11 @@ public class VentanaPrincipal {
 				try {
 					Connection con= ConnectionSingleton.getConnection();
 					PreparedStatement smt2=con.prepareStatement("INSERT into personas(primerNombre,ultimoNombre,dni) VALUES(?,?,?)");
+					
 					smt2.setString(1, textFieldNombre.getText());
 					smt2.setString(2, textFieldNombre2.getText());
 					smt2.setString(3, textFieldDNI.getText());
+					
 					
 					smt2.executeUpdate();
 					smt2.close();
@@ -125,17 +133,44 @@ public class VentanaPrincipal {
 		btnSave.setBounds(51, 237, 85, 25);
 		frame.getContentPane().add(btnSave);
 		
+		
+		//ACTUALIZAR
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			
+				try {
+					TableModel model=table.getModel();
+					int index=table.getSelectedRow();
+					Connection con= ConnectionSingleton.getConnection();
+					PreparedStatement smt2=con.prepareStatement("UPDATE personas set primerNombre=? ultimoNombre = ? dni = ?) WHERE dni = ?");
+					
+					textFieldNombre.setText(model.getValueAt(index, 1).toString());
+					textFieldNombre2.setText(model.getValueAt(index, 2).toString());
+					textFieldDNI.setText(model.getValueAt(index, 3).toString());
+					
+					String dni=(String) model.getValueAt(index, 3);
+					
+					smt2.setString(1, textFieldNombre.getText());
+					smt2.setString(2, textFieldNombre2.getText());
+					smt2.setString(3, textFieldDNI.getText());
+					
+					smt2.setString(4,dni);
+					
+					smt2.executeUpdate();
+					smt2.close();
+					con.close();
+				}catch(SQLException ex) {
+					ex.printStackTrace();
+				}
+		
 			}
 		});
 	
 		btnUpdate.setBounds(161, 237, 90, 25);
 		frame.getContentPane().add(btnUpdate);
 		
+		//BORRAR
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override
@@ -144,17 +179,18 @@ public class VentanaPrincipal {
 					Connection con= ConnectionSingleton.getConnection();
 					TableModel model=table.getModel();
 					int index=table.getSelectedRow();
-					PreparedStatement smt2=con.prepareStatement("DELETE * FROM personas WHERE dni=?");
+					PreparedStatement smt2=con.prepareStatement("DELETE FROM personas WHERE dni = ?");
 					
 					textFieldNombre.setText(model.getValueAt(index, 1).toString());
 					textFieldNombre2.setText(model.getValueAt(index, 2).toString());
 					textFieldDNI.setText(model.getValueAt(index, 3).toString());
 					
 					String dni=(String) model.getValueAt(index, 3);
-					System.out.println(dni);
 					
-				smt2.setString(1,model.getValueAt(index, 3).toString());
-					System.out.println();
+					
+				smt2.setString(1,dni);
+					
+					
 					smt2.executeUpdate();
 					smt2.close();
 					con.close();
@@ -177,10 +213,14 @@ public class VentanaPrincipal {
 		table = new JTable(model);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setBounds(373,42,193,120);
+		
+		//ENSEÑAR DATOS
 		try {
 			Connection con= ConnectionSingleton.getConnection();
 			Statement smt = con.createStatement();
 			ResultSet rs= smt.executeQuery("SELECT * from personas");
+			 
+			int index=table.getSelectedRow();
 			
 			while(rs.next()) {
 				Object[] row =new Object[4];
